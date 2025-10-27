@@ -64,6 +64,9 @@ body {
 .nav-menu a.active {
     color: #a8d5ba;
     background-color: rgba(255,255,255,0.1);
+    font-weight: 700;
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
 }
 
 /* ヒーローセクション */
@@ -442,9 +445,6 @@ body {
 }
 
 /* スムーススクロール */
-html {
-    scroll-behavior: smooth;
-}
 
 /* アニメーション */
 @keyframes fadeInUp {
@@ -463,23 +463,3 @@ html {
     animation: fadeInUp 0.6s ease-out;
 }
 
-/* ホバーエフェクトの改善 */
-.nav-menu a {
-    position: relative;
-    overflow: hidden;
-}
-
-.nav-menu a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-}
-
-.nav-menu a:hover::before {
-    left: 100%;
-}

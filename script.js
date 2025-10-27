@@ -10,14 +10,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             
+            console.log('Clicked link:', targetId);
+            console.log('Target section:', targetSection);
+            
             if (targetSection) {
                 const headerHeight = document.querySelector('.header').offsetHeight;
                 const targetPosition = targetSection.offsetTop - headerHeight;
+                
+                console.log('Scrolling to position:', targetPosition);
                 
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+            } else {
+                console.log('Target section not found for:', targetId);
             }
         });
     });
