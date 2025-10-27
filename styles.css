@@ -6,11 +6,17 @@
 }
 
 /* 基本設定 */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: 'Noto Sans JP', sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f8f9fa;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 
 .container {
@@ -36,19 +42,23 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
 }
 
 .nav-brand h1 {
-    font-size: 1.5rem;
+    font-size: clamp(0.7rem, 2vw, 1.5rem);
     font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+    line-height: 1.2;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: clamp(0.5rem, 1.5vw, 2rem);
+    flex-shrink: 1;
 }
 
 .nav-menu a {
@@ -56,8 +66,10 @@ body {
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
-    padding: 0.5rem 1rem;
+    padding: clamp(0.3rem, 1vw, 0.5rem) clamp(0.5rem, 1.5vw, 1rem);
     border-radius: 5px;
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+    white-space: nowrap;
 }
 
 .nav-menu a:hover,
@@ -166,11 +178,13 @@ body {
     padding: 0 20px;
 }
 
-.hero-title {
-    font-size: 3rem;
+.hero .hero-title {
+    font-size: clamp(2rem, 8vw, 4rem) !important;
     font-weight: 700;
     margin-bottom: 2rem;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    white-space: nowrap;
+    line-height: 1.1;
 }
 
 .hero-description {
@@ -446,7 +460,7 @@ body {
 }
 
 /* レスポンシブデザイン */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .nav {
         flex-direction: row;
         justify-content: space-between;
@@ -455,7 +469,7 @@ body {
     }
     
     .nav-brand h1 {
-        font-size: 1.2rem;
+        font-size: clamp(0.7rem, 1.8vw, 1.1rem);
     }
     
     .nav-menu {
@@ -470,12 +484,53 @@ body {
         display: block;
     }
     
-    .hero-title {
-        font-size: 2rem;
+    .hero .hero-title {
+        font-size: clamp(1.8rem, 7vw, 3rem) !important;
+        white-space: nowrap;
+        line-height: 1.1;
+    }
+}
+
+/* より小さな画面用の追加調整 */
+@media (max-width: 1200px) {
+    .nav {
+        padding: 1rem 1.5rem;
+    }
+    
+    .nav-menu {
+        gap: clamp(0.3rem, 1vw, 1.5rem);
+    }
+}
+
+@media (max-width: 600px) {
+    .nav {
+        padding: 0.8rem 1rem;
+    }
+    
+    .nav-brand h1 {
+        font-size: clamp(0.6rem, 1.5vw, 0.9rem);
     }
     
     .hero-description {
         font-size: 1rem;
+    }
+}
+
+/* 非常に小さな画面用（400px以下） */
+@media (max-width: 400px) {
+    .nav {
+        padding: 0.6rem 0.8rem;
+    }
+    
+    .nav-brand h1 {
+        font-size: clamp(0.5rem, 1.2vw, 0.8rem);
+        letter-spacing: -0.5px;
+    }
+    
+    .hero .hero-title {
+        font-size: clamp(1.2rem, 5vw, 2rem) !important;
+        white-space: nowrap;
+        line-height: 1.1;
     }
     
     .section-title {
@@ -543,8 +598,10 @@ body {
         padding: 50px 0;
     }
     
-    .hero-title {
-        font-size: 1.8rem;
+    .hero .hero-title {
+        font-size: clamp(1.5rem, 6vw, 2.5rem) !important;
+        white-space: nowrap;
+        line-height: 1.1;
     }
     
     .section-title {

@@ -279,33 +279,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // タッチデバイス対応
-    let touchStartY = 0;
-    let touchEndY = 0;
+    // タッチデバイス対応（無効化 - 通常のスクロールと干渉するため）
+    // let touchStartY = 0;
+    // let touchEndY = 0;
     
-    document.addEventListener('touchstart', function(e) {
-        touchStartY = e.changedTouches[0].screenY;
-    });
+    // document.addEventListener('touchstart', function(e) {
+    //     touchStartY = e.changedTouches[0].screenY;
+    // });
     
-    document.addEventListener('touchend', function(e) {
-        touchEndY = e.changedTouches[0].screenY;
-        handleSwipe();
-    });
+    // document.addEventListener('touchend', function(e) {
+    //     touchEndY = e.changedTouches[0].screenY;
+    //     handleSwipe();
+    // });
     
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartY - touchEndY;
+    // function handleSwipe() {
+    //     const swipeThreshold = 50;
+    //     const diff = touchStartY - touchEndY;
         
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // 上スワイプ - 次のセクションへ
-                scrollToNextSection();
-            } else {
-                // 下スワイプ - 前のセクションへ
-                scrollToPreviousSection();
-            }
-        }
-    }
+    //     if (Math.abs(diff) > swipeThreshold) {
+    //         if (diff > 0) {
+    //             // 上スワイプ - 次のセクションへ
+    //             scrollToNextSection();
+    //         } else {
+    //             // 下スワイプ - 前のセクションへ
+    //             scrollToPreviousSection();
+    //         }
+    //     }
+    // }
     
     function scrollToNextSection() {
         const currentScroll = window.scrollY;
@@ -359,7 +359,7 @@ const debouncedResize = debounce(function() {
     const header = document.querySelector('.header');
     const nav = document.querySelector('.nav');
     
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 900) {
         nav.style.flexDirection = 'row';
         // デスクトップメニューを非表示
         document.querySelector('.nav-menu').style.display = 'none';
