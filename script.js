@@ -1,5 +1,56 @@
 // スムーススクロールとナビゲーション
 document.addEventListener('DOMContentLoaded', function() {
+    // ハンバーガーメニューの制御
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-menu a[href^="#"]');
+    
+    // ハンバーガーメニューの開閉
+    hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+        
+        // メニューが開いている時はbodyのスクロールを無効化
+        if (mobileMenu.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // モバイルメニューのリンククリック時の処理
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            console.log('Mobile menu clicked:', targetId);
+            console.log('Target section:', targetSection);
+            
+            if (targetSection) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = targetSection.offsetTop - headerHeight;
+                
+                console.log('Scrolling to position:', targetPosition);
+                
+                // メニューを閉じる
+                hamburger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // スムーススクロール
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            } else {
+                console.log('Target section not found for:', targetId);
+            }
+        });
+    });
+    
     // ナビゲーションメニューのスムーススクロール
     const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
     
@@ -32,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // アクティブなセクションのハイライト
     const sections = document.querySelectorAll('.section');
     const navItems = document.querySelectorAll('.nav-menu a');
+    const mobileNavItems = document.querySelectorAll('.mobile-nav-menu a');
     
     function highlightNavigation() {
         let current = '';
@@ -46,7 +98,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // デスクトップメニューのハイライト
         navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === '#' + current) {
+                item.classList.add('active');
+            }
+        });
+        
+        // モバイルメニューのハイライト
+        mobileNavItems.forEach(item => {
             item.classList.remove('active');
             if (item.getAttribute('href') === '#' + current) {
                 item.classList.add('active');
@@ -299,9 +360,21 @@ const debouncedResize = debounce(function() {
     const nav = document.querySelector('.nav');
     
     if (window.innerWidth <= 768) {
-        nav.style.flexDirection = 'column';
+        nav.style.flexDirection = 'row';
+        // デスクトップメニューを非表示
+        document.querySelector('.nav-menu').style.display = 'none';
+        // ハンバーガーメニューを表示
+        document.querySelector('.hamburger').style.display = 'flex';
     } else {
         nav.style.flexDirection = 'row';
+        // デスクトップメニューを表示
+        document.querySelector('.nav-menu').style.display = 'flex';
+        // ハンバーガーメニューを非表示
+        document.querySelector('.hamburger').style.display = 'none';
+        // モバイルメニューを閉じる
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        document.body.style.overflow = '';
     }
 }, 250);
 
