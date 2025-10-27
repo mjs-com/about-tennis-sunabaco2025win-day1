@@ -20,6 +20,7 @@
                 <li><a href="#netplay">ネットプレー</a></li>
                 <li><a href="#tactical">応用ショット</a></li>
                 <li><a href="#spin">スピン</a></li>
+                <li><a href="#quiz">クイズ</a></li>
             </ul>
             <!-- ハンバーガーメニューボタン -->
             <button class="hamburger" id="hamburger">
@@ -36,6 +37,7 @@
                 <li><a href="#netplay">ネットプレー</a></li>
                 <li><a href="#tactical">応用ショット</a></li>
                 <li><a href="#spin">スピン</a></li>
+                <li><a href="#quiz">クイズ</a></li>
             </ul>
         </div>
     </header>
@@ -50,6 +52,9 @@
                     テニスは「ボールを打つ」スポーツですが、その「打ち方（ショット）」には驚くほど多くの種類があります。<br>
                     このサイトでは、テニスの基本的なショットから、試合を有利に進めるための応用ショットまで、あらゆるショットを徹底的に解説します。
                 </p>
+                <div class="hero-actions">
+                    <a href="#quiz" class="quiz-button">🎾 テニスクイズに挑戦！</a>
+                </div>
                 <div class="hero-image">
                     <img src="picture/青いテニスコード（ハードコート、無人）.jpg" alt="テニスコート" class="hero-img">
                 </div>
@@ -468,6 +473,54 @@
                         <p class="final-message">
                             このサイトで学んだ知識を、ぜひコートで試してみてください。あなたのテニスライフがより豊かになることを願っています！
                         </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- クイズセクション -->
+        <section id="quiz" class="section quiz-section">
+            <div class="container">
+                <h2 class="section-title">テニスクイズ</h2>
+                <p class="section-intro">学んだ知識をテストしてみましょう！全10問のクイズに挑戦してください。</p>
+                
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <div class="quiz-progress">
+                            <span class="progress-text">問題 <span id="current-question">1</span> / <span id="total-questions">10</span></span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                        </div>
+                        <div class="quiz-score">
+                            スコア: <span id="score">0</span> / <span id="total-questions-score">10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-content">
+                        <div class="question-container" id="question-container">
+                            <h3 class="question-title" id="question-title">問題を読み込み中...</h3>
+                            <div class="question-image" id="question-image"></div>
+                            <div class="options-container" id="options-container">
+                                <!-- 選択肢がここに動的に生成されます -->
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-result" id="quiz-result" style="display: none;">
+                            <h3 class="result-title">クイズ完了！</h3>
+                            <div class="result-score">
+                                <span class="score-number" id="final-score">0</span> / <span id="final-total">10</span> 問正解
+                            </div>
+                            <div class="result-message" id="result-message"></div>
+                            <div class="result-actions">
+                                <button class="restart-button" id="restart-button">もう一度挑戦</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-controls">
+                        <button class="start-button" id="start-button">クイズを開始</button>
+                        <button class="next-button" id="next-button" style="display: none;">次の問題</button>
                     </div>
                 </div>
             </div>

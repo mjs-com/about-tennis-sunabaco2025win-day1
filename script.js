@@ -379,3 +379,288 @@ const debouncedResize = debounce(function() {
 }, 250);
 
 window.addEventListener('resize', debouncedResize);
+
+// クイズ機能
+class TennisQuiz {
+    constructor() {
+        this.questions = [
+            {
+                question: "フォアハンドストロークで最も重要なコツは何ですか？",
+                options: [
+                    "ボールを強く叩くこと",
+                    "テイクバックを大きくすること",
+                    "体の前方で最も力の入るポイントで捉えること",
+                    "ラケットを軽く持つこと"
+                ],
+                correct: 2,
+                explanation: "フォアハンドでは、体の前方で最も力の入るポイントでボールを捉えることが重要です。これにより安定したショットが打てます。"
+            },
+            {
+                question: "バックハンドの種類として正しいものはどれですか？",
+                options: [
+                    "両手バックハンドと片手バックハンド",
+                    "フラットバックハンドとスピンバックハンド",
+                    "アッパーバックハンドとダウンバックハンド",
+                    "ストロークバックハンドとボレーバックハンド"
+                ],
+                correct: 0,
+                explanation: "バックハンドには両手バックハンドと片手バックハンドの2つの種類があります。両手は安定性が高く、片手はリーチが広いのが特徴です。"
+            },
+            {
+                question: "サービスの種類として正しくないものはどれですか？",
+                options: [
+                    "フラットサーブ",
+                    "スライスサーブ",
+                    "スピンサーブ（キックサーブ）",
+                    "ドロップサーブ"
+                ],
+                correct: 3,
+                explanation: "ドロップサーブはサービスの種類ではありません。サービスにはフラット、スライス、スピン（キック）の3つの基本タイプがあります。"
+            },
+            {
+                question: "ボレーの基本グリップは何ですか？",
+                options: [
+                    "ウエスタングリップ",
+                    "セミウエスタングリップ",
+                    "コンチネンタルグリップ（包丁握り）",
+                    "イースタングリップ"
+                ],
+                correct: 2,
+                explanation: "ボレーではコンチネンタルグリップ（包丁握り）が基本です。このグリップにより、ネットプレーに適した安定したショットが打てます。"
+            },
+            {
+                question: "スマッシュで最も重要なのは何ですか？",
+                options: [
+                    "ボールを強く叩くこと",
+                    "落下地点を素早く見つけること",
+                    "ラケットを大きく振ること",
+                    "ジャンプすること"
+                ],
+                correct: 1,
+                explanation: "スマッシュでは、ボールを指差し（利き腕と反対の手）で素早く落下地点を見つけ、そこに移動することが最も重要です。"
+            },
+            {
+                question: "スライスショットの効果として正しいものはどれですか？",
+                options: [
+                    "ボールが高く弾む",
+                    "ボールが低く滑る",
+                    "ボールが速く飛ぶ",
+                    "ボールが曲がる"
+                ],
+                correct: 1,
+                explanation: "スライスは逆回転（アンダースピン）をかけるショットで、ボールが低く滑る軌道を生み出します。相手の打点を低くする効果があります。"
+            },
+            {
+                question: "ドロップショットを打つ最適なタイミングはいつですか？",
+                options: [
+                    "相手がネットに近い時",
+                    "相手がベースラインの後方にいる時",
+                    "相手がサイドラインにいる時",
+                    "相手が疲れている時"
+                ],
+                correct: 1,
+                explanation: "ドロップショットは相手がベースラインの後方にいる時に効果的です。相手が前に出てくる時間を稼げます。"
+            },
+            {
+                question: "ロブの種類として正しいものはどれですか？",
+                options: [
+                    "攻撃的ロブと守備的ロブ",
+                    "高ロブと低ロブ",
+                    "長ロブと短ロブ",
+                    "速ロブと遅ロブ"
+                ],
+                correct: 0,
+                explanation: "ロブには攻撃的ロブ（トップスピンロブ）と守備的ロブの2つの種類があります。攻撃的ロブは相手がネットにいる時に頭上を抜くために使います。"
+            },
+            {
+                question: "トップスピンの効果として正しいものはどれですか？",
+                options: [
+                    "ボールが低く滑る",
+                    "ボールが高く弾む",
+                    "ボールが遅く飛ぶ",
+                    "ボールが曲がる"
+                ],
+                correct: 1,
+                explanation: "トップスピンは順回転をかけるショットで、ボールがバウンド後に高く弾む効果があります。安定性と攻撃力を両立できます。"
+            },
+            {
+                question: "リターンで最も重要なのは何ですか？",
+                options: [
+                    "強く打ち返すこと",
+                    "スプリットステップをすること",
+                    "コースを狙うこと",
+                    "回転をかけること"
+                ],
+                correct: 1,
+                explanation: "リターンでは、相手が打つ瞬間にスプリットステップ（小さくジャンプ）をして、どちらにも動ける準備をすることが最も重要です。"
+            }
+        ];
+        
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.userAnswers = [];
+        this.isQuizActive = false;
+        
+        this.init();
+    }
+    
+    init() {
+        this.startButton = document.getElementById('start-button');
+        this.nextButton = document.getElementById('next-button');
+        this.restartButton = document.getElementById('restart-button');
+        this.questionContainer = document.getElementById('question-container');
+        this.quizResult = document.getElementById('quiz-result');
+        this.questionTitle = document.getElementById('question-title');
+        this.questionImage = document.getElementById('question-image');
+        this.optionsContainer = document.getElementById('options-container');
+        this.currentQuestionSpan = document.getElementById('current-question');
+        this.totalQuestionsSpan = document.getElementById('total-questions');
+        this.scoreSpan = document.getElementById('score');
+        this.totalQuestionsScoreSpan = document.getElementById('total-questions-score');
+        this.progressFill = document.getElementById('progress-fill');
+        this.finalScoreSpan = document.getElementById('final-score');
+        this.finalTotalSpan = document.getElementById('final-total');
+        this.resultMessageSpan = document.getElementById('result-message');
+        
+        this.totalQuestionsSpan.textContent = this.questions.length;
+        this.totalQuestionsScoreSpan.textContent = this.questions.length;
+        this.finalTotalSpan.textContent = this.questions.length;
+        
+        this.startButton.addEventListener('click', () => this.startQuiz());
+        this.nextButton.addEventListener('click', () => this.nextQuestion());
+        this.restartButton.addEventListener('click', () => this.restartQuiz());
+    }
+    
+    startQuiz() {
+        this.isQuizActive = true;
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.userAnswers = [];
+        
+        this.startButton.style.display = 'none';
+        this.questionContainer.style.display = 'block';
+        this.quizResult.style.display = 'none';
+        
+        this.showQuestion();
+    }
+    
+    showQuestion() {
+        const question = this.questions[this.currentQuestion];
+        
+        this.questionTitle.textContent = question.question;
+        this.currentQuestionSpan.textContent = this.currentQuestion + 1;
+        this.scoreSpan.textContent = this.score;
+        
+        // プログレスバーの更新
+        const progress = ((this.currentQuestion) / this.questions.length) * 100;
+        this.progressFill.style.width = progress + '%';
+        
+        // 選択肢を生成
+        this.optionsContainer.innerHTML = '';
+        question.options.forEach((option, index) => {
+            const button = document.createElement('button');
+            button.className = 'option-button';
+            button.textContent = option;
+            button.addEventListener('click', () => this.selectAnswer(index));
+            this.optionsContainer.appendChild(button);
+        });
+        
+        this.nextButton.style.display = 'none';
+    }
+    
+    selectAnswer(selectedIndex) {
+        const question = this.questions[this.currentQuestion];
+        const optionButtons = this.optionsContainer.querySelectorAll('.option-button');
+        
+        // すべてのボタンを無効化
+        optionButtons.forEach(button => {
+            button.disabled = true;
+        });
+        
+        // 正解・不正解のスタイルを適用
+        optionButtons.forEach((button, index) => {
+            if (index === question.correct) {
+                button.classList.add('correct');
+            } else if (index === selectedIndex && index !== question.correct) {
+                button.classList.add('incorrect');
+            }
+        });
+        
+        // スコア更新
+        if (selectedIndex === question.correct) {
+            this.score++;
+        }
+        
+        this.userAnswers.push({
+            questionIndex: this.currentQuestion,
+            selected: selectedIndex,
+            correct: question.correct,
+            isCorrect: selectedIndex === question.correct
+        });
+        
+        this.scoreSpan.textContent = this.score;
+        
+        // 次の問題ボタンを表示
+        if (this.currentQuestion < this.questions.length - 1) {
+            this.nextButton.style.display = 'block';
+        } else {
+            // 最後の問題の場合、結果を表示
+            setTimeout(() => {
+                this.showResult();
+            }, 2000);
+        }
+    }
+    
+    nextQuestion() {
+        this.currentQuestion++;
+        this.showQuestion();
+    }
+    
+    showResult() {
+        this.questionContainer.style.display = 'none';
+        this.quizResult.style.display = 'block';
+        
+        this.finalScoreSpan.textContent = this.score;
+        
+        // 結果メッセージ
+        const percentage = (this.score / this.questions.length) * 100;
+        let message = '';
+        
+        if (percentage >= 90) {
+            message = '🎾 素晴らしい！テニスのエキスパートですね！';
+        } else if (percentage >= 70) {
+            message = '👍 とても良い成績です！さらに上達を目指しましょう！';
+        } else if (percentage >= 50) {
+            message = '📚 基本的な知識は身についています。復習して再挑戦してみてください！';
+        } else {
+            message = '💪 まだまだ勉強が必要ですね。サイトの内容をしっかり読んで再挑戦してください！';
+        }
+        
+        this.resultMessageSpan.textContent = message;
+        
+        // プログレスバーを100%に
+        this.progressFill.style.width = '100%';
+    }
+    
+    restartQuiz() {
+        this.isQuizActive = false;
+        this.currentQuestion = 0;
+        this.score = 0;
+        this.userAnswers = [];
+        
+        this.startButton.style.display = 'block';
+        this.questionContainer.style.display = 'none';
+        this.quizResult.style.display = 'none';
+        
+        // プログレスバーをリセット
+        this.progressFill.style.width = '0%';
+        
+        // スコアをリセット
+        this.scoreSpan.textContent = '0';
+    }
+}
+
+// クイズを初期化
+document.addEventListener('DOMContentLoaded', function() {
+    new TennisQuiz();
+});
