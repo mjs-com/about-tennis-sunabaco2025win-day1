@@ -411,13 +411,13 @@ class TennisQuiz {
             {
                 question: "フォアハンドのグリップの種類として正しいものはどれですか？",
                 options: [
-                    "ウエスタン、セミウエスタン",
+                    "イースタン、セミウエスタン、ウエスタン",
                     "コンチネンタル、イースタン",
                     "フラット、スピン",
                     "ストローク、ボレー"
                 ],
                 correct: 0,
-                explanation: "フォアハンドではウエスタン、セミウエスタンなどのグリップが使われます。自分に合った握り方を見つけることが重要です。"
+                explanation: "フォアハンドではイースタン、セミウエスタン、ウエスタンなどのグリップが使われます。自分に合った握り方を見つけることが重要です。"
             },
             {
                 question: "フォアハンドの準備で重要なのは何ですか？",
@@ -1055,6 +1055,9 @@ class TennisQuiz {
         // 選択肢をシャッフル
         question = this.shuffleOptions(question);
         
+        // シャッフルされた問題を配列に保存
+        this.questions[this.currentQuestion] = question;
+        
         this.questionTitle.textContent = question.question;
         this.currentQuestionSpan.textContent = this.currentQuestion + 1;
         this.scoreSpan.textContent = this.score;
@@ -1079,11 +1082,6 @@ class TennisQuiz {
     selectAnswer(selectedIndex) {
         let question = this.questions[this.currentQuestion];
         
-        // 選択肢がシャッフルされているので、元の正解インデックスを取得
-        const originalQuestion = this.allQuestions.find(q => q.question === question.question);
-        const correctAnswer = originalQuestion.options[originalQuestion.correct];
-        const currentCorrectIndex = question.options.indexOf(correctAnswer);
-        
         const optionButtons = this.optionsContainer.querySelectorAll('.option-button');
         
         // すべてのボタンを無効化
@@ -1093,23 +1091,23 @@ class TennisQuiz {
         
         // 正解・不正解のスタイルを適用
         optionButtons.forEach((button, index) => {
-            if (index === currentCorrectIndex) {
+            if (index === question.correct) {
                 button.classList.add('correct');
-            } else if (index === selectedIndex && index !== currentCorrectIndex) {
+            } else if (index === selectedIndex && index !== question.correct) {
                 button.classList.add('incorrect');
             }
         });
         
         // スコア更新
-        if (selectedIndex === currentCorrectIndex) {
+        if (selectedIndex === question.correct) {
             this.score++;
         }
         
         this.userAnswers.push({
             questionIndex: this.currentQuestion,
             selected: selectedIndex,
-            correct: currentCorrectIndex,
-            isCorrect: selectedIndex === currentCorrectIndex
+            correct: question.correct,
+            isCorrect: selectedIndex === question.correct
         });
         
         this.scoreSpan.textContent = this.score;
